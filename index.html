@@ -364,9 +364,187 @@
         .slide {
             scroll-snap-align: start;
         }
+
+        /* QR Code Badge - Top Left */
+        .qr-badge {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(249, 250, 251, 0.98) 100%);
+            padding: 12px 16px;
+            border-radius: 16px;
+            border: 2px solid var(--primary);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), 0 0 20px rgba(37, 99, 235, 0.2);
+            backdrop-filter: blur(10px);
+            animation: slideIn 0.5s ease-out;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .qr-badge:hover {
+            border-color: var(--primary-dark);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), 0 0 30px rgba(37, 99, 235, 0.3);
+            transform: scale(1.02);
+        }
+        
+        .qr-badge .qr-code-container {
+            background: #fff;
+            padding: 6px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .qr-badge .qr-code-container img {
+            display: block;
+        }
+        
+        .qr-badge-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        
+        .qr-badge-text span {
+            font-size: 0.7rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .qr-badge-text strong {
+            color: var(--primary);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        /* QR Modal Overlay */
+        .qr-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .qr-modal-overlay.active {
+            display: flex;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .qr-modal {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(249, 250, 251, 1) 100%);
+            padding: 40px;
+            border-radius: 24px;
+            border: 2px solid var(--primary);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(37, 99, 235, 0.3);
+            text-align: center;
+            animation: scaleIn 0.3s ease;
+        }
+        
+        @keyframes scaleIn {
+            from { 
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to { 
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .qr-modal h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .qr-modal p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+        }
+        
+        .qr-modal .qr-code-large {
+            background: #fff;
+            padding: 20px;
+            border-radius: 16px;
+            display: inline-block;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .qr-modal .qr-code-large img {
+            display: block;
+        }
+        
+        .qr-modal .close-hint {
+            margin-top: 20px;
+            color: var(--text-light);
+            font-size: 0.8rem;
+        }
+        
+        @media (max-width: 768px) {
+            .qr-badge {
+                position: relative;
+                top: auto;
+                left: auto;
+                margin: 0 auto 20px auto;
+                width: fit-content;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- QR Code Badge - Top Left (Clickable) -->
+    <div class="qr-badge" onclick="openQRModal()">
+        <div class="qr-code-container">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=https://regenfren.github.io/relationship/" alt="QR Code" width="80" height="80">
+        </div>
+        <div class="qr-badge-text">
+            <span>Click to enlarge</span>
+            <strong>📱 Scan Me!</strong>
+        </div>
+    </div>
+    
+    <!-- QR Modal (Enlarged View) -->
+    <div class="qr-modal-overlay" id="qrModal" onclick="closeQRModal()">
+        <div class="qr-modal" onclick="event.stopPropagation()">
+            <h2>📱 Scan to View on Your Phone</h2>
+            <p>Point your camera at the QR code</p>
+            <div class="qr-code-large">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=https://regenfren.github.io/relationship/" alt="QR Code" width="280" height="280">
+            </div>
+            <p class="close-hint">Click anywhere to close</p>
+        </div>
+    </div>
+
     <!-- Navigation Dots -->
     <div class="nav-dots">
         <div class="nav-dot active" data-slide="0"></div>
@@ -594,6 +772,22 @@
                 slides[currentIndex + 1].scrollIntoView({ behavior: 'smooth' });
             } else if (e.key === 'ArrowUp' && currentIndex > 0) {
                 slides[currentIndex - 1].scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+
+        // QR Code Modal Functions
+        function openQRModal() {
+            document.getElementById('qrModal').classList.add('active');
+        }
+        
+        function closeQRModal() {
+            document.getElementById('qrModal').classList.remove('active');
+        }
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeQRModal();
             }
         });
     </script>
