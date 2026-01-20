@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Being a Relational Manager</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #7c3aed;
+            --accent: #f59e0b;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --bg: #ffffff;
+            --bg-alt: #f9fafb;
+            --border: #e5e7eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        .nav-dots {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .nav-dot:hover {
+            background: var(--primary);
+            transform: scale(1.2);
+        }
+
+        .nav-dot.active {
+            background: var(--primary);
+            border-color: var(--primary-dark);
+            transform: scale(1.3);
+        }
+
+        /* Slide Container */
+        .slide {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 60px;
+            position: relative;
+            scroll-snap-align: start;
+        }
+
+        .slide-content {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Title Slide */
+        .title-slide {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .title-slide h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+            line-height: 1.1;
+        }
+
+        .title-slide .subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: 300;
+            opacity: 0.95;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Content Slides */
+        .content-slide {
+            background: var(--bg);
+        }
+
+        .content-slide h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 40px;
+            color: var(--text);
+            line-height: 1.2;
+        }
+
+        .content-slide h3 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .content-slide p {
+            font-size: clamp(1.1rem, 2vw, 1.3rem);
+            color: var(--text-light);
+            margin-bottom: 25px;
+            line-height: 1.8;
+        }
+
+        /* Definition Section */
+        .definition-box {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
+            border-left: 5px solid var(--primary);
+            padding: 40px;
+            border-radius: 12px;
+            margin: 40px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .definition-box p {
+            font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+            color: var(--text);
+            font-weight: 500;
+            line-height: 1.8;
+        }
+
+        /* Key Points */
+        .key-points {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+
+        .key-point {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border-top: 4px solid var(--primary);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .key-point:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .key-point-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .key-point h4 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        .key-point p {
+            font-size: 1rem;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        /* Examples Section */
+        .examples-grid {
+            display: grid;
+            gap: 40px;
+            margin: 50px 0;
+        }
+
+        .example-card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-left: 6px solid var(--accent);
+            transition: all 0.3s ease;
+        }
+
+        .example-card:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            transform: translateX(5px);
+        }
+
+        .example-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .example-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--accent), #f97316);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .example-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .example-description {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+
+        .example-highlight {
+            background: #fef3c7;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .example-highlight strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        /* Feedback Section */
+        .feedback-principles {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            padding: 40px;
+            border-radius: 12px;
+            margin: 40px 0;
+        }
+
+        .feedback-principles h4 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: var(--text);
+        }
+
+        .feedback-principles ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feedback-principles li {
+            font-size: 1.2rem;
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            color: var(--text);
+        }
+
+        .feedback-principles li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .scroll-arrow {
+            width: 30px;
+            height: 30px;
+            border: 2px solid var(--text-light);
+            border-top: none;
+            border-right: none;
+            transform: rotate(-45deg);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0) rotate(-45deg);
+            }
+            40% {
+                transform: translateY(-10px) rotate(-45deg);
+            }
+            60% {
+                transform: translateY(-5px) rotate(-45deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .slide {
+                padding: 60px 30px;
+            }
+
+            .nav-dots {
+                right: 15px;
+            }
+
+            .key-points {
+                grid-template-columns: 1fr;
+            }
+
+            .definition-box,
+            .example-card {
+                padding: 25px;
+            }
+        }
+
+        /* Smooth scroll snap */
+        html {
+            scroll-snap-type: y mandatory;
+        }
+
+        .slide {
+            scroll-snap-align: start;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Dots -->
+    <div class="nav-dots">
+        <div class="nav-dot active" data-slide="0"></div>
+        <div class="nav-dot" data-slide="1"></div>
+        <div class="nav-dot" data-slide="2"></div>
+        <div class="nav-dot" data-slide="3"></div>
+    </div>
+
+    <!-- Title Slide -->
+    <section class="slide title-slide" id="slide-0">
+        <div class="slide-content">
+            <h1>Being a Relational Manager</h1>
+            <p class="subtitle">Leadership Through Connection</p>
+        </div>
+    </section>
+
+    <!-- What is Relationship-Oriented Leadership -->
+    <section class="slide content-slide" id="slide-1">
+        <div class="slide-content">
+            <h2>What is Relationship-Oriented Leadership?</h2>
+            
+            <div class="definition-box">
+                <p>Relationship-oriented leadership focuses on building strong interpersonal connections, fostering open communication, and prioritizing the well-being and development of team members. It emphasizes understanding different perspectives, creating trust, and maintaining positive working relationships.</p>
+            </div>
+
+            <p>Unlike task-oriented leadership that focuses primarily on goals and efficiency, relationship-oriented managers understand that <strong>people are the foundation of success</strong>. They recognize that different team members have different perceptions, needs, and communication styles.</p>
+
+            <div class="key-points">
+                <div class="key-point">
+                    <div class="key-point-icon">🤝</div>
+                    <h4>Open Communication</h4>
+                    <p>Creating safe spaces for dialogue and encouraging team members to express their thoughts and concerns.</p>
+                </div>
+                <div class="key-point">
+                    <div class="key-point-icon">👁️</div>
+                    <h4>Understanding Perceptions</h4>
+                    <p>Recognizing that people see things differently and actively working to bridge perception gaps.</p>
+                </div>
+                <div class="key-point">
+                    <div class="key-point-icon">💬</div>
+                    <h4>Constructive Feedback</h4>
+                    <p>Using feedback as a tool to build common understanding and align team vision.</p>
+                </div>
+                <div class="key-point">
+                    <div class="key-point-icon">❤️</div>
+                    <h4>Emotional Intelligence</h4>
+                    <p>Being attuned to team members' emotions and creating an environment where feelings are acknowledged.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Power of Feedback -->
+    <section class="slide content-slide" id="slide-2">
+        <div class="slide-content">
+            <h2>The Power of Feedback</h2>
+            
+            <p>One of the core tools of relationship-oriented leadership is <strong>effective feedback</strong>. Why is it so important?</p>
+
+            <div class="key-points">
+                <div class="key-point">
+                    <h4>Different Perceptions</h4>
+                    <p>Team members naturally have different viewpoints and interpretations of the same situation.</p>
+                </div>
+                <div class="key-point">
+                    <h4>Bridging Gaps</h4>
+                    <p>Perception gaps can widen over time and lead to misunderstandings or conflicts if not addressed.</p>
+                </div>
+                <div class="key-point">
+                    <h4>Building Common Vision</h4>
+                    <p>Through open dialogue, teams can align their understanding and work toward shared goals.</p>
+                </div>
+            </div>
+
+            <div class="feedback-principles">
+                <h4>How Feedback Works in Relationship-Oriented Leadership:</h4>
+                <ul>
+                    <li><strong>Talk about yourself (I-statements)</strong> - Share your perspective without blaming others</li>
+                    <li><strong>Express your emotions</strong> - Acknowledge feelings and create emotional connection</li>
+                    <li><strong>Use an informal approach</strong> - Create a comfortable, conversational atmosphere</li>
+                    <li><strong>Accept different opinions</strong> - Value diverse viewpoints and build consensus</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Examples -->
+    <section class="slide content-slide" id="slide-3">
+        <div class="slide-content">
+            <h2>Real-World Examples</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 40px;">Here are interesting ways managers use relationship-oriented leadership in their teams:</p>
+
+            <div class="examples-grid">
+                <div class="example-card">
+                    <div class="example-header">
+                        <div class="example-number">1</div>
+                        <div class="example-title">Weekly One-on-Ones with Personal Check-ins</div>
+                    </div>
+                    <div class="example-description">
+                        A manager at a tech startup schedules 30-minute weekly one-on-ones that start with "How are you doing, really?" before diving into work topics. This creates space for team members to share personal challenges, work-life balance concerns, or career aspirations.
+                    </div>
+                    <div class="example-highlight">
+                        <strong>Impact:</strong> Team members feel valued as whole people, not just workers, leading to increased loyalty and reduced turnover.
+                    </div>
+                </div>
+
+                <div class="example-card">
+                    <div class="example-header">
+                        <div class="example-number">2</div>
+                        <div class="example-title">"Perception Alignment" Meetings</div>
+                    </div>
+                    <div class="example-description">
+                        After major projects, a marketing director holds "perception alignment" sessions where team members share what they thought went well, what didn't, and how they interpreted key decisions. The manager facilitates discussion to bridge understanding gaps.
+                    </div>
+                    <div class="example-highlight">
+                        <strong>Impact:</strong> Prevents conflicts from perception gaps and helps the team learn from each other's viewpoints.
+                    </div>
+                </div>
+
+                <div class="example-card">
+                    <div class="example-header">
+                        <div class="example-number">3</div>
+                        <div class="example-title">Informal "Coffee Walk" Feedback Sessions</div>
+                    </div>
+                    <div class="example-description">
+                        Instead of formal performance reviews, a creative agency manager takes team members on walking meetings outside the office. The informal setting encourages honest, emotion-based conversations about work challenges and growth opportunities.
+                    </div>
+                    <div class="example-highlight">
+                        <strong>Impact:</strong> More authentic feedback exchange and stronger manager-employee relationships built on trust.
+                    </div>
+                </div>
+
+                <div class="example-card">
+                    <div class="example-header">
+                        <div class="example-number">4</div>
+                        <div class="example-title">Team "Emotion Check-ins" Before Meetings</div>
+                    </div>
+                    <div class="example-description">
+                        A project manager starts every team meeting with a quick "emotion check-in" where each person shares one word describing how they're feeling. This practice normalizes emotional expression and helps the team understand each other's current state.
+                    </div>
+                    <div class="example-highlight">
+                        <strong>Impact:</strong> Team members are more empathetic and adjust their communication style based on others' emotional states.
+                    </div>
+                </div>
+
+                <div class="example-card">
+                    <div class="example-header">
+                        <div class="example-number">5</div>
+                        <div class="example-title">"I-Statement" Conflict Resolution</div>
+                    </div>
+                    <div class="example-description">
+                        When conflicts arise, a retail manager uses structured "I-statement" sessions: "I felt... when... because..." This approach helps team members express their perspective without defensiveness, leading to collaborative problem-solving.
+                    </div>
+                    <div class="example-highlight">
+                        <strong>Impact:</strong> Conflicts are resolved faster and relationships are strengthened rather than damaged.
+                    </div>
+                </div>
+
+                <div class="example-card">
+                    <div class="example-header">
+                        <div class="example-number">6</div>
+                        <div class="example-title">Reverse Feedback Sessions</div>
+                    </div>
+                    <div class="example-description">
+                        A department head regularly asks team members for feedback on their own management style. They create a safe space where employees can share what's working and what could improve, modeling vulnerability and continuous learning.
+                    </div>
+                    <div class="example-highlight">
+                        <strong>Impact:</strong> Creates a culture of mutual respect and continuous improvement, with managers learning from their teams.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scroll Indicator (only on first slide) -->
+    <div class="scroll-indicator" id="scroll-indicator">
+        <div class="scroll-arrow"></div>
+        <span>Scroll to explore</span>
+    </div>
+
+    <script>
+        // Navigation dots functionality
+        const navDots = document.querySelectorAll('.nav-dot');
+        const slides = document.querySelectorAll('.slide');
+        const scrollIndicator = document.getElementById('scroll-indicator');
+
+        // Update active dot based on scroll position
+        function updateActiveDot() {
+            const scrollPosition = window.scrollY + window.innerHeight / 2;
+            
+            slides.forEach((slide, index) => {
+                const slideTop = slide.offsetTop;
+                const slideBottom = slideTop + slide.offsetHeight;
+                
+                if (scrollPosition >= slideTop && scrollPosition < slideBottom) {
+                    navDots.forEach(dot => dot.classList.remove('active'));
+                    navDots[index].classList.add('active');
+                    
+                    // Hide scroll indicator after first slide
+                    if (index > 0) {
+                        scrollIndicator.style.opacity = '0';
+                    } else {
+                        scrollIndicator.style.opacity = '1';
+                    }
+                }
+            });
+        }
+
+        // Click navigation dots
+        navDots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                slides[index].scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Update on scroll
+        window.addEventListener('scroll', updateActiveDot);
+        updateActiveDot(); // Initial call
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            const currentIndex = Array.from(navDots).findIndex(dot => dot.classList.contains('active'));
+            
+            if (e.key === 'ArrowDown' && currentIndex < slides.length - 1) {
+                slides[currentIndex + 1].scrollIntoView({ behavior: 'smooth' });
+            } else if (e.key === 'ArrowUp' && currentIndex > 0) {
+                slides[currentIndex - 1].scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    </script>
+</body>
+</html>
