@@ -519,6 +519,184 @@
                 width: fit-content;
             }
         }
+
+        /* Anti-Examples Slide */
+        .anti-examples-slide {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            color: white;
+        }
+
+        .anti-examples-slide h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 50px;
+            text-align: center;
+            color: white;
+        }
+
+        .anti-examples-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .anti-example-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 30px;
+            border: 2px solid rgba(239, 68, 68, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .anti-example-image {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            border-radius: 12px;
+            margin: 0 auto 20px;
+            display: block;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .anti-example-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #fca5a5;
+        }
+
+        .anti-example-bullets {
+            list-style: none;
+            padding: 0;
+        }
+
+        .anti-example-bullets li {
+            font-size: 1.1rem;
+            padding: 10px 0;
+            padding-left: 25px;
+            position: relative;
+            color: #e5e7eb;
+            line-height: 1.6;
+        }
+
+        .anti-example-bullets li::before {
+            content: "✗";
+            position: absolute;
+            left: 0;
+            color: #ef4444;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        /* Positive/Negative Sections */
+        .pros-cons-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            margin: 40px 0;
+        }
+
+        .pros-card {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border-left: 5px solid #10b981;
+            padding: 30px;
+            border-radius: 12px;
+        }
+
+        .cons-card {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border-left: 5px solid #ef4444;
+            padding: 30px;
+            border-radius: 12px;
+        }
+
+        .pros-card h3, .cons-card h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .pros-card h3 {
+            color: #065f46;
+        }
+
+        .cons-card h3 {
+            color: #991b1b;
+        }
+
+        .pros-card ul, .cons-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .pros-card li {
+            font-size: 1.1rem;
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        .pros-card li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+
+        .cons-card li {
+            font-size: 1.1rem;
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        .cons-card li::before {
+            content: "✗";
+            position: absolute;
+            left: 0;
+            color: #ef4444;
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+
+        /* Case Study Section */
+        .case-study-box {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-left: 5px solid var(--primary);
+            padding: 40px;
+            border-radius: 12px;
+            margin: 40px 0;
+        }
+
+        .case-study-box h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .case-study-box p {
+            font-size: 1.2rem;
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        @media (max-width: 768px) {
+            .anti-examples-grid,
+            .pros-cons-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -551,169 +729,191 @@
         <div class="nav-dot" data-slide="1"></div>
         <div class="nav-dot" data-slide="2"></div>
         <div class="nav-dot" data-slide="3"></div>
+        <div class="nav-dot" data-slide="4"></div>
+        <div class="nav-dot" data-slide="5"></div>
+        <div class="nav-dot" data-slide="6"></div>
     </div>
 
+    <!-- Anti-Examples Slide -->
+    <section class="slide anti-examples-slide" id="slide-0">
+        <div class="slide-content">
+            <h2>There are different leaders in the world</h2>
+            
+            <div class="anti-examples-grid">
+                <div class="anti-example-card">
+                    <img src="https://i.imgur.com/example-diddy.jpg" alt="Diddy" class="anti-example-image" onerror="this.style.display='none'">
+                    <div class="anti-example-name">Sean "Diddy" Combs</div>
+                    <ul class="anti-example-bullets">
+                        <li>Controlling behavior</li>
+                        <li>Abusive management style</li>
+                        <li>Intimidation tactics</li>
+                        <li>Fear-based leadership</li>
+                        <li>No open communication</li>
+                        <li>Power imbalance</li>
+                    </ul>
+                </div>
+
+                <div class="anti-example-card">
+                    <img src="https://i.imgur.com/example-epstein.jpg" alt="Epstein" class="anti-example-image" onerror="this.style.display='none'">
+                    <div class="anti-example-name">Jeffrey Epstein</div>
+                    <ul class="anti-example-bullets">
+                        <li>Blackmail and manipulation</li>
+                        <li>Creating dependency</li>
+                        <li>No transparency</li>
+                        <li>Exploitation of relationships</li>
+                        <li>Boundary violations</li>
+                        <li>Isolation tactics</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Title Slide -->
-    <section class="slide title-slide" id="slide-0">
+    <section class="slide title-slide" id="slide-1">
         <div class="slide-content">
             <h1>Being a Relational Manager</h1>
-            <p class="subtitle">Leadership Through Connection</p>
+            <p class="subtitle">Relationship-Oriented Leadership</p>
         </div>
     </section>
 
     <!-- What is Relationship-Oriented Leadership -->
-    <section class="slide content-slide" id="slide-1">
+    <section class="slide content-slide" id="slide-2">
         <div class="slide-content">
             <h2>What is Relationship-Oriented Leadership?</h2>
             
             <div class="definition-box">
-                <p>Relationship-oriented leadership focuses on building strong interpersonal connections, fostering open communication, and prioritizing the well-being and development of team members. It emphasizes understanding different perspectives, creating trust, and maintaining positive working relationships.</p>
+                <p>Relationship-oriented leadership, also known as people-oriented leadership, focuses on supporting and motivating teams or work groups and the relationships therein. Relationship-oriented leaders prioritize healthy work environments, team cohesion, and group members' individual and collective satisfaction.</p>
             </div>
 
-            <p>Unlike task-oriented leadership that focuses primarily on goals and efficiency, relationship-oriented managers understand that <strong>people are the foundation of success</strong>. They recognize that different team members have different perceptions, needs, and communication styles.</p>
+            <p>Relationship-oriented leaders are more <strong>democratic</strong> and often utilize <strong>group decision-making methods</strong>.</p>
 
             <div class="key-points">
                 <div class="key-point">
                     <div class="key-point-icon">🤝</div>
-                    <h4>Open Communication</h4>
-                    <p>Creating safe spaces for dialogue and encouraging team members to express their thoughts and concerns.</p>
+                    <h4>Support & Motivation</h4>
+                    <p>Focusing on supporting and motivating teams and work groups</p>
                 </div>
                 <div class="key-point">
-                    <div class="key-point-icon">👁️</div>
-                    <h4>Understanding Perceptions</h4>
-                    <p>Recognizing that people see things differently and actively working to bridge perception gaps.</p>
+                    <div class="key-point-icon">🏢</div>
+                    <h4>Healthy Work Environment</h4>
+                    <p>Prioritizing healthy work environments and team cohesion</p>
                 </div>
                 <div class="key-point">
-                    <div class="key-point-icon">💬</div>
-                    <h4>Constructive Feedback</h4>
-                    <p>Using feedback as a tool to build common understanding and align team vision.</p>
+                    <div class="key-point-icon">😊</div>
+                    <h4>Individual Satisfaction</h4>
+                    <p>Ensuring group members' individual and collective satisfaction</p>
                 </div>
                 <div class="key-point">
-                    <div class="key-point-icon">❤️</div>
-                    <h4>Emotional Intelligence</h4>
-                    <p>Being attuned to team members' emotions and creating an environment where feelings are acknowledged.</p>
+                    <div class="key-point-icon">🗳️</div>
+                    <h4>Democratic Approach</h4>
+                    <p>Utilizing group decision-making methods and democratic leadership</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- The Power of Feedback -->
-    <section class="slide content-slide" id="slide-2">
+    <!-- Skills Section -->
+    <section class="slide content-slide" id="slide-3">
         <div class="slide-content">
-            <h2>The Power of Feedback</h2>
+            <h2>Relationship-Oriented Leadership Skills</h2>
             
-            <p>One of the core tools of relationship-oriented leadership is <strong>effective feedback</strong>. Why is it so important?</p>
+            <p style="font-size: 1.3rem; margin-bottom: 30px;">Relationship-oriented leadership skills derive from one's ability to:</p>
 
             <div class="key-points">
                 <div class="key-point">
-                    <h4>Different Perceptions</h4>
-                    <p>Team members naturally have different viewpoints and interpretations of the same situation.</p>
+                    <div class="key-point-icon">👥</div>
+                    <h4>Hire Diverse Staff</h4>
+                    <p>Recruit diverse and creative staff who can work together effectively</p>
                 </div>
                 <div class="key-point">
-                    <h4>Bridging Gaps</h4>
-                    <p>Perception gaps can widen over time and lead to misunderstandings or conflicts if not addressed.</p>
+                    <div class="key-point-icon">🤝</div>
+                    <h4>Foster Collaboration</h4>
+                    <p>Create an environment where team members can get along and work collaboratively</p>
                 </div>
                 <div class="key-point">
-                    <h4>Building Common Vision</h4>
-                    <p>Through open dialogue, teams can align their understanding and work toward shared goals.</p>
+                    <div class="key-point-icon">💡</div>
+                    <h4>Encourage Innovation</h4>
+                    <p>Enable teams to discover innovative solutions through strong relationships</p>
                 </div>
-            </div>
-
-            <div class="feedback-principles">
-                <h4>How Feedback Works in Relationship-Oriented Leadership:</h4>
-                <ul>
-                    <li><strong>Talk about yourself (I-statements)</strong> - Share your perspective without blaming others</li>
-                    <li><strong>Express your emotions</strong> - Acknowledge feelings and create emotional connection</li>
-                    <li><strong>Use an informal approach</strong> - Create a comfortable, conversational atmosphere</li>
-                    <li><strong>Accept different opinions</strong> - Value diverse viewpoints and build consensus</li>
-                </ul>
             </div>
         </div>
     </section>
 
-    <!-- Examples -->
-    <section class="slide content-slide" id="slide-3">
+    <!-- La Poste Case Study -->
+    <section class="slide content-slide" id="slide-4">
         <div class="slide-content">
-            <h2>Real-World Examples</h2>
-            <p style="font-size: 1.2rem; margin-bottom: 40px;">Here are interesting ways managers use relationship-oriented leadership in their teams:</p>
+            <h2>Case Study: La Poste</h2>
+            
+            <div class="case-study-box">
+                <h3>The Challenge</h3>
+                <p>La Poste has different locations where employees are demotivated, working in chaos and silent quitting. Relationship-oriented leadership can be used to fix that and improve the workplace.</p>
+            </div>
 
-            <div class="examples-grid">
-                <div class="example-card">
-                    <div class="example-header">
-                        <div class="example-number">1</div>
-                        <div class="example-title">Weekly One-on-Ones with Personal Check-ins</div>
-                    </div>
-                    <div class="example-description">
-                        A manager at a tech startup schedules 30-minute weekly one-on-ones that start with "How are you doing, really?" before diving into work topics. This creates space for team members to share personal challenges, work-life balance concerns, or career aspirations.
-                    </div>
-                    <div class="example-highlight">
-                        <strong>Impact:</strong> Team members feel valued as whole people, not just workers, leading to increased loyalty and reduced turnover.
-                    </div>
+            <p style="font-size: 1.2rem; margin-top: 30px;">Relationship-oriented leadership offers solutions to address these workplace challenges through:</p>
+
+            <div class="key-points">
+                <div class="key-point">
+                    <div class="key-point-icon">💪</div>
+                    <h4>Re-engagement</h4>
+                    <p>Rebuilding motivation and connection with work</p>
                 </div>
-
-                <div class="example-card">
-                    <div class="example-header">
-                        <div class="example-number">2</div>
-                        <div class="example-title">"Perception Alignment" Meetings</div>
-                    </div>
-                    <div class="example-description">
-                        After major projects, a marketing director holds "perception alignment" sessions where team members share what they thought went well, what didn't, and how they interpreted key decisions. The manager facilitates discussion to bridge understanding gaps.
-                    </div>
-                    <div class="example-highlight">
-                        <strong>Impact:</strong> Prevents conflicts from perception gaps and helps the team learn from each other's viewpoints.
-                    </div>
+                <div class="key-point">
+                    <div class="key-point-icon">🔄</div>
+                    <h4>Reducing Chaos</h4>
+                    <p>Creating structure through strong relationships and communication</p>
                 </div>
-
-                <div class="example-card">
-                    <div class="example-header">
-                        <div class="example-number">3</div>
-                        <div class="example-title">Informal "Coffee Walk" Feedback Sessions</div>
-                    </div>
-                    <div class="example-description">
-                        Instead of formal performance reviews, a creative agency manager takes team members on walking meetings outside the office. The informal setting encourages honest, emotion-based conversations about work challenges and growth opportunities.
-                    </div>
-                    <div class="example-highlight">
-                        <strong>Impact:</strong> More authentic feedback exchange and stronger manager-employee relationships built on trust.
-                    </div>
+                <div class="key-point">
+                    <div class="key-point-icon">🗣️</div>
+                    <h4>Preventing Silent Quitting</h4>
+                    <p>Encouraging open dialogue and addressing concerns before they escalate</p>
                 </div>
+            </div>
+        </div>
+    </section>
 
-                <div class="example-card">
-                    <div class="example-header">
-                        <div class="example-number">4</div>
-                        <div class="example-title">Team "Emotion Check-ins" Before Meetings</div>
-                    </div>
-                    <div class="example-description">
-                        A project manager starts every team meeting with a quick "emotion check-in" where each person shares one word describing how they're feeling. This practice normalizes emotional expression and helps the team understand each other's current state.
-                    </div>
-                    <div class="example-highlight">
-                        <strong>Impact:</strong> Team members are more empathetic and adjust their communication style based on others' emotional states.
-                    </div>
+    <!-- Positive Aspects -->
+    <section class="slide content-slide" id="slide-5">
+        <div class="slide-content">
+            <h2>Positive Aspects</h2>
+            
+            <div class="pros-cons-grid">
+                <div class="pros-card">
+                    <h3>✓ Benefits</h3>
+                    <ul>
+                        <li>Focus on giving the right work, schedule and tasks to the right people, based on their strengths and confidence</li>
+                        <li>Feeling supported in a team</li>
+                        <li>Controlling a chaotic environment</li>
+                        <li>Adjusting to the team members</li>
+                        <li>How the manager can help you</li>
+                        <li>Integrating every member in the group</li>
+                        <li>Getting everyone's opinion, to make sure everyone feels included</li>
+                        <li>Create confidence with each other</li>
+                        <li>Using the employees' best strengths</li>
+                        <li>Personal questions, interested in their personal life</li>
+                    </ul>
                 </div>
+            </div>
+        </div>
+    </section>
 
-                <div class="example-card">
-                    <div class="example-header">
-                        <div class="example-number">5</div>
-                        <div class="example-title">"I-Statement" Conflict Resolution</div>
-                    </div>
-                    <div class="example-description">
-                        When conflicts arise, a retail manager uses structured "I-statement" sessions: "I felt... when... because..." This approach helps team members express their perspective without defensiveness, leading to collaborative problem-solving.
-                    </div>
-                    <div class="example-highlight">
-                        <strong>Impact:</strong> Conflicts are resolved faster and relationships are strengthened rather than damaged.
-                    </div>
-                </div>
-
-                <div class="example-card">
-                    <div class="example-header">
-                        <div class="example-number">6</div>
-                        <div class="example-title">Reverse Feedback Sessions</div>
-                    </div>
-                    <div class="example-description">
-                        A department head regularly asks team members for feedback on their own management style. They create a safe space where employees can share what's working and what could improve, modeling vulnerability and continuous learning.
-                    </div>
-                    <div class="example-highlight">
-                        <strong>Impact:</strong> Creates a culture of mutual respect and continuous improvement, with managers learning from their teams.
-                    </div>
+    <!-- Negative Aspects -->
+    <section class="slide content-slide" id="slide-6">
+        <div class="slide-content">
+            <h2>Challenges & Limitations</h2>
+            
+            <div class="pros-cons-grid">
+                <div class="cons-card">
+                    <h3>✗ Drawbacks</h3>
+                    <ul>
+                        <li>Breaching the relationship</li>
+                        <li>Exploiting the personal relationship</li>
+                        <li>Challenging authority and defying power</li>
+                        <li>Blackmail</li>
+                        <li>Cannot benchmark relationships</li>
+                        <li>Scaling it is hard - they are good but you cannot have a good relationship with huge numbers</li>
+                        <li>Breaching the boundary between manager and employee</li>
+                    </ul>
                 </div>
             </div>
         </div>
