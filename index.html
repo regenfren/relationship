@@ -431,6 +431,59 @@
             font-size: 0.85rem;
             font-weight: 600;
         }
+
+        .qr-badge.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(-100px);
+        }
+
+        /* QR Toggle Button */
+        .qr-toggle-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1002;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(249, 250, 251, 0.98) 100%);
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .qr-toggle-btn.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .qr-toggle-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* Show toggle button when QR badge is visible and hovered */
+        .qr-badge:not(.hidden):hover ~ .qr-toggle-btn {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* Always show toggle button when QR is hidden */
+        .qr-badge.hidden ~ .qr-toggle-btn {
+            opacity: 1;
+            pointer-events: all;
+        }
         
         /* QR Modal Overlay */
         .qr-modal-overlay {
@@ -758,7 +811,7 @@
 </head>
 <body>
     <!-- QR Code Badge - Top Left (Clickable) -->
-    <div class="qr-badge" onclick="openQRModal()">
+    <div class="qr-badge" id="qrBadge" onclick="openQRModal()">
         <div class="qr-code-container">
             <img src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=https://regenfren.github.io/relationship/" alt="QR Code" width="80" height="80">
         </div>
@@ -767,6 +820,12 @@
             <strong>📱 Scan Me!</strong>
         </div>
     </div>
+
+    <!-- QR Toggle Button -->
+    <button class="qr-toggle-btn" id="qrToggleBtn" onclick="toggleQRBadge()" title="Toggle QR Code">
+        <span id="qrToggleIcon">👁️</span>
+        <span id="qrToggleText">Show QR</span>
+    </button>
 
     <!-- Fullscreen Button -->
     <button class="fullscreen-btn" onclick="toggleFullscreen()" id="fullscreenBtn" title="Press F for fullscreen">
@@ -1057,6 +1116,59 @@
                 closeQRModal();
             }
         });
+
+        // QR Badge Toggle Functionality
+        function toggleQRBadge() {
+            const qrBadge = document.getElementById('qrBadge');
+            const qrToggleBtn = document.getElementById('qrToggleBtn');
+            const qrToggleIcon = document.getElementById('qrToggleIcon');
+            const qrToggleText = document.getElementById('qrToggleText');
+            
+            if (qrBadge.classList.contains('hidden')) {
+                // Show QR badge
+                qrBadge.classList.remove('hidden');
+                qrToggleIcon.textContent = '👁️';
+                qrToggleText.textContent = 'Hide QR';
+            } else {
+                // Hide QR badge
+                qrBadge.classList.add('hidden');
+                qrToggleIcon.textContent = '👁️‍🗨️';
+                qrToggleText.textContent = 'Show QR';
+            }
+        }
+
+        // Show toggle button when QR badge is hovered or when QR is hidden
+        const qrBadge = document.getElementById('qrBadge');
+        const qrToggleBtn = document.getElementById('qrToggleBtn');
+        
+        qrBadge.addEventListener('mouseenter', () => {
+            qrToggleBtn.classList.add('visible');
+        });
+        
+        qrToggleBtn.addEventListener('mouseenter', () => {
+            qrToggleBtn.classList.add('visible');
+        });
+        
+        qrBadge.addEventListener('mouseleave', () => {
+            if (!qrBadge.classList.contains('hidden')) {
+                qrToggleBtn.classList.remove('visible');
+            }
+        });
+        
+        qrToggleBtn.addEventListener('mouseleave', () => {
+            if (!qrBadge.classList.contains('hidden')) {
+                qrToggleBtn.classList.remove('visible');
+            }
+        });
+
+        // Keep toggle button visible when QR is hidden
+        const observer = new MutationObserver(() => {
+            if (qrBadge.classList.contains('hidden')) {
+                qrToggleBtn.classList.add('visible');
+            }
+        });
+        
+        observer.observe(qrBadge, { attributes: true, attributeFilter: ['class'] });
 
         // Fullscreen functionality
         function toggleFullscreen() {
