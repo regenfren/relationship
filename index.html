@@ -520,6 +520,53 @@
             }
         }
 
+        /* Fullscreen Button */
+        .fullscreen-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(249, 250, 251, 0.98) 100%);
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 12px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .fullscreen-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .fullscreen-btn:active {
+            transform: scale(0.98);
+        }
+
+        .fullscreen-btn .icon {
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .fullscreen-btn {
+                top: auto;
+                bottom: 20px;
+                right: 20px;
+                padding: 10px 16px;
+                font-size: 0.85rem;
+            }
+        }
+
         /* Anti-Examples Slide */
         .anti-examples-slide {
             background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
@@ -710,6 +757,12 @@
             <strong>📱 Scan Me!</strong>
         </div>
     </div>
+
+    <!-- Fullscreen Button -->
+    <button class="fullscreen-btn" onclick="toggleFullscreen()" id="fullscreenBtn" title="Press F for fullscreen">
+        <span class="icon" id="fullscreenIcon">⛶</span>
+        <span id="fullscreenText">Fullscreen</span>
+    </button>
     
     <!-- QR Modal (Enlarged View) -->
     <div class="qr-modal-overlay" id="qrModal" onclick="closeQRModal()">
@@ -988,6 +1041,71 @@
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeQRModal();
+            }
+        });
+
+        // Fullscreen functionality
+        function toggleFullscreen() {
+            const fullscreenBtn = document.getElementById('fullscreenBtn');
+            const fullscreenIcon = document.getElementById('fullscreenIcon');
+            const fullscreenText = document.getElementById('fullscreenText');
+
+            if (!document.fullscreenElement && !document.webkitFullscreenElement && 
+                !document.mozFullScreenElement && !document.msFullscreenElement) {
+                // Enter fullscreen
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                } else if (document.documentElement.webkitRequestFullscreen) {
+                    document.documentElement.webkitRequestFullscreen();
+                } else if (document.documentElement.mozRequestFullScreen) {
+                    document.documentElement.mozRequestFullScreen();
+                } else if (document.documentElement.msRequestFullscreen) {
+                    document.documentElement.msRequestFullscreen();
+                }
+            } else {
+                // Exit fullscreen
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            }
+        }
+
+        // Update fullscreen button state
+        function updateFullscreenButton() {
+            const fullscreenIcon = document.getElementById('fullscreenIcon');
+            const fullscreenText = document.getElementById('fullscreenText');
+            const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement || 
+                                 document.mozFullScreenElement || document.msFullscreenElement;
+
+            if (isFullscreen) {
+                fullscreenIcon.textContent = '⛶';
+                fullscreenText.textContent = 'Exit';
+            } else {
+                fullscreenIcon.textContent = '⛶';
+                fullscreenText.textContent = 'Fullscreen';
+            }
+        }
+
+        // Listen for fullscreen changes
+        document.addEventListener('fullscreenchange', updateFullscreenButton);
+        document.addEventListener('webkitfullscreenchange', updateFullscreenButton);
+        document.addEventListener('mozfullscreenchange', updateFullscreenButton);
+        document.addEventListener('MSFullscreenChange', updateFullscreenButton);
+
+        // Keyboard shortcut: F key for fullscreen
+        document.addEventListener('keydown', function(e) {
+            // Only trigger if not typing in an input field
+            if (e.key === 'f' || e.key === 'F') {
+                if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+                    e.preventDefault();
+                    toggleFullscreen();
+                }
             }
         });
     </script>
